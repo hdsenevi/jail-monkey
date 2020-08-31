@@ -62,7 +62,6 @@ RCT_EXPORT_MODULE();
              @"/var/cache/apt",
              @"/var/lib/apt",
              @"/var/lib/cydia",
-             @"/System/Library/LaunchDaemons/com.openssh.ssdh.plist",
              @"/Library/LaunchDaemons/com.openssh.sshd.plist",
              ];
 }
