@@ -8,7 +8,7 @@ public class GreaterThan23 implements CheckApiVersion {
 
     @Override
     public boolean checkRooted() {
-        return checkRootMethod1() || checkRootMethod2();
+        return checkRootMethod1() || checkRootMethod2() || checkUserIdAndExecuteSu() || checkFolderAccess();
     }
 
     private boolean checkRootMethod1() {
@@ -68,5 +68,13 @@ public class GreaterThan23 implements CheckApiVersion {
         } finally {
             if (process != null) process.destroy();
         }
+    }
+
+    private boolean checkFolderAccess() {
+        String[] paths = {"/data"};
+        for (String path : paths) {
+            if (new File(path).canRead()) return true;
+        }
+        return false;
     }
 }
