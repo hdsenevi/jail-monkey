@@ -31,10 +31,38 @@ public class GreaterThan23 implements CheckApiVersion {
     private boolean checkRootMethod2() {
         Process process = null;
         try {
-            process = Runtime.getRuntime().exec(new String[] { "/system/xbin/which", "su" });
+            final String whichPathOld = "system/xbin/which";
+            final String whichPathNew = "system/bin/which";
+
+            if (new File(whichPathOld).exists()) {
+                process = Runtime.getRuntime().exec(new String[]{whichPathOld, "su"});
+            } else if (new File(whichPathNew).exists()) {
+                process = Runtime.getRuntime().exec(new String[]{whichPathNew, "su"});
+            } else {
+                process = Runtime.getRuntime().exec(new String[]{"which", "su"});
+            }
+
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             if (in.readLine() != null) return true;
             return false;
+        } catch (Throwable t) {
+            return false;
+        } finally {
+            if (process != null) process.destroy();
+        }
+    }       
+
+    private boolean checkUserIdAndExecuteSu() {
+        Process process = null;
+
+        try {
+            process = Runtime.getRuntime().exec("id");
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            if (in.readLine().contains("uid=0")) return true;
+
+            // Android Will throw exception if permission denied when user try to invoke Su
+            process = Runtime.getRuntime().exec("su");
+            return true;
         } catch (Throwable t) {
             return false;
         } finally {
