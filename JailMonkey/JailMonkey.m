@@ -396,6 +396,17 @@ char* decryptString(char* str){
              @"/var/lib/apt",
              @"/var/lib/cydia",
              @"/Library/LaunchDaemons/com.openssh.sshd.plist",
+             @"/usr/bin/ssh",
+             @"/private/etc/dpkg/origins/debian",
+             @"/bin.sh",
+             @"/private/etc/apt",
+             @"/private/etc/ssh/sshd_config",
+             @"/Applications/SBSetttings.app",
+             @"/private/var/mobileLibrary/SBSettingsThemes/",
+             @"/usr/libexec/cydia/",
+             @"/Applications/Snoop-itConfig.app",
+             @"/var/checkra1n.dmg",
+             @"/var/binpack",
              ];
 }
 
