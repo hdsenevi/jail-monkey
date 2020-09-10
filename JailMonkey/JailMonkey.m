@@ -396,17 +396,6 @@ char* decryptString(char* str){
              @"/var/lib/apt",
              @"/var/lib/cydia",
              @"/Library/LaunchDaemons/com.openssh.sshd.plist",
-             @"/usr/bin/ssh",
-             @"/private/etc/dpkg/origins/debian",
-             @"/bin.sh",
-             @"/private/etc/apt",
-             @"/private/etc/ssh/sshd_config",
-             @"/Applications/SBSetttings.app",
-             @"/private/var/mobileLibrary/SBSettingsThemes/",
-             @"/usr/libexec/cydia/",
-             @"/Applications/Snoop-itConfig.app",
-             @"/var/checkra1n.dmg",
-             @"/var/binpack",
              ];
 }
 
@@ -422,7 +411,13 @@ char* decryptString(char* str){
     BOOL existsPath = NO;
 
     for (NSString *path in [self pathsToCheck]) {
+        // Check for readability
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
+            existsPath = YES;
+            break;
+        }
+        // Check for writability
+        if ([[NSFileManager defaultManager] isWritableFileAtPath:path]){
             existsPath = YES;
             break;
         }
