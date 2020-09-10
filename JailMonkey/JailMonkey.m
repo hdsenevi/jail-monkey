@@ -55,7 +55,7 @@ const char* tuyul(const char* X, const char* Y)
 {
     if (*Y == '\0')
         return X;
-
+    
     for (int i = 0; i < strlen(X); i++)
     {
         if (*(X + i) == *Y)
@@ -64,7 +64,7 @@ const char* tuyul(const char* X, const char* Y)
             return (ptr) ? ptr - 1 : NULL;
         }
     }
-
+    
     return NULL;
 }
 
@@ -361,55 +361,66 @@ char* decryptString(char* str){
 - (NSArray *)pathsToCheck
 {
     return @[
-             @"/Applications/Cydia.app",
-             @"/Library/MobileSubstrate/MobileSubstrate.dylib",
-             @"/bin/bash",
-             @"/usr/sbin/sshd",
-             @"/etc/apt",
-             @"/private/var/lib/apt",
-             @"/usr/sbin/frida-server",
-             @"/usr/bin/cycript",
-             @"/usr/local/bin/cycript",
-             @"/usr/lib/libcycript.dylib",
-             @"/Applications/FakeCarrier.app",
-             @"/Applications/Icy.app",
-             @"/Applications/IntelliScreen.app",
-             @"/Applications/MxTube.app",
-             @"/Applications/RockApp.app",
-             @"/Applications/SBSettings.app",
-             @"/Applications/WinterBoard.app",
-             @"/Applications/blackra1n.app",
-             @"/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
-             @"/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
-             @"/System/Library/LaunchDaemons/com.ikey.bbot.plist",
-             @"/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
-             @"/bin/sh",
-             @"/etc/ssh/sshd_config",
-             @"/private/var/lib/cydia",
-             @"/private/var/mobile/Library/SBSettings/Themes",
-             @"/private/var/stash",
-             @"/private/var/tmp/cydia.log",
-             @"/usr/bin/sshd",
-             @"/usr/libexec/sftp-server",
-             @"/usr/libexec/ssh-keysign",
-             @"/var/cache/apt",
-             @"/var/lib/apt",
-             @"/var/lib/cydia",
-             @"/Library/LaunchDaemons/com.openssh.sshd.plist",
-             ];
+        @"/Applications/Cydia.app",
+        @"/Library/MobileSubstrate/MobileSubstrate.dylib",
+        @"/bin/bash",
+        @"/usr/sbin/sshd",
+        @"/etc/apt",
+        @"/private/var/lib/apt",
+        @"/usr/sbin/frida-server",
+        @"/usr/bin/cycript",
+        @"/usr/local/bin/cycript",
+        @"/usr/lib/libcycript.dylib",
+        @"/Applications/FakeCarrier.app",
+        @"/Applications/Icy.app",
+        @"/Applications/IntelliScreen.app",
+        @"/Applications/MxTube.app",
+        @"/Applications/RockApp.app",
+        @"/Applications/SBSettings.app",
+        @"/Applications/WinterBoard.app",
+        @"/Applications/blackra1n.app",
+        @"/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
+        @"/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
+        @"/System/Library/LaunchDaemons/com.ikey.bbot.plist",
+        @"/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
+        @"/bin/sh",
+        @"/etc/ssh/sshd_config",
+        @"/private/var/lib/cydia",
+        @"/private/var/mobile/Library/SBSettings/Themes",
+        @"/private/var/stash",
+        @"/private/var/tmp/cydia.log",
+        @"/usr/bin/sshd",
+        @"/usr/libexec/sftp-server",
+        @"/usr/libexec/ssh-keysign",
+        @"/var/cache/apt",
+        @"/var/lib/apt",
+        @"/var/lib/cydia",
+        @"/Library/LaunchDaemons/com.openssh.sshd.plist",
+        @"/usr/bin/ssh",
+        @"/private/etc/dpkg/origins/debian",
+        @"/bin.sh",
+        @"/private/etc/apt",
+        @"/private/etc/ssh/sshd_config",
+        @"/Applications/SBSetttings.app",
+        @"/private/var/mobileLibrary/SBSettingsThemes/",
+        @"/usr/libexec/cydia/",
+        @"/Applications/Snoop-itConfig.app",
+        @"/var/checkra1n.dmg",
+        @"/var/binpack",
+    ];
 }
 
 - (NSArray *)schemesToCheck
 {
     return @[
-             @"cydia://package/com.example.package",
-             ];
+        @"cydia://package/com.example.package",
+    ];
 }
 
 - (BOOL)checkPaths
 {
     BOOL existsPath = NO;
-
+    
     for (NSString *path in [self pathsToCheck]) {
         // Check for readability
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
@@ -422,37 +433,37 @@ char* decryptString(char* str){
             break;
         }
     }
-
+    
     return existsPath;
 }
 
 - (BOOL)checkSchemes
 {
     BOOL canOpenScheme = NO;
-
+    
     for (NSString *scheme in [self schemesToCheck]) {
         if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:scheme]]){
             canOpenScheme = YES;
             break;
         }
     }
-
+    
     return canOpenScheme;
 }
 
 - (BOOL)canViolateSandbox{
-	NSError *error;
+    NSError *error;
     BOOL grantsToWrite = NO;
-	NSString *stringToBeWritten = @"This is an anti-spoofing test.";
-	[stringToBeWritten writeToFile:JMJailbreakTextFile atomically:YES
-						  encoding:NSUTF8StringEncoding error:&error];
-	if(!error){
-		//Device is jailbroken
-		grantsToWrite = YES;
-	}
-
+    NSString *stringToBeWritten = @"This is an anti-spoofing test.";
+    [stringToBeWritten writeToFile:JMJailbreakTextFile atomically:YES
+                          encoding:NSUTF8StringEncoding error:&error];
+    if(!error){
+        //Device is jailbroken
+        grantsToWrite = YES;
+    }
+    
     [[NSFileManager defaultManager] removeItemAtPath:JMJailbreakTextFile error:nil];
-
+    
     return grantsToWrite;
 }
 
@@ -460,38 +471,38 @@ char* decryptString(char* str){
     struct kinfo_proc info;
     size_t info_size = sizeof(info);
     int name[4];
-
+    
     name[0] = CTL_KERN;
     name[1] = KERN_PROC;
     name[2] = KERN_PROC_PID;
     name[3] = getpid();
-
+    
     if (sysctl(name, 4, &info, &info_size, NULL, 0) == -1) {
         NSLog(@"sysctl() failed: %s", strerror(errno));
         return false;
     }
-
+    
     if ((info.kp_proc.p_flag & P_TRACED) != 0) {
         return true;
-	}
-
+    }
+    
     return false;
 }
 
 - (BOOL)isJailBroken{
-    #if TARGET_OS_SIMULATOR
-      return NO;
-    #endif
+#if TARGET_OS_SIMULATOR
+    return NO;
+#endif
     return [self checkPaths] || [self checkSchemes] || [self canViolateSandbox] || [self isInjectedWithDynamicLibrary];
 }
 
 - (NSDictionary *)constantsToExport
 {
-	return @{
-			 JMisJailBronkenKey: @(self.isJailBroken),
-			 JMisDebuggedKey: @(self.isDebugged),
-			 JMCanMockLocationKey: @(self.isJailBroken)
-			 };
+    return @{
+        JMisJailBronkenKey: @(self.isJailBroken),
+        JMisDebuggedKey: @(self.isDebugged),
+        JMCanMockLocationKey: @(self.isJailBroken)
+    };
 }
 
 @end
