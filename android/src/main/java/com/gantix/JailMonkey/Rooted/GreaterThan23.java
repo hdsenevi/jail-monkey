@@ -8,7 +8,7 @@ public class GreaterThan23 implements CheckApiVersion {
 
     @Override
     public boolean checkRooted() {
-        return checkRootMethod1() || checkRootMethod2() || checkUserIdAndExecuteSu() || checkFolderAccess();
+        return checkRootMethod1() || checkRootMethod2() || checkUserIdAndExecuteSu() || checkFolderAccess() || checkInstalls();
     }
 
     private boolean checkRootMethod1() {
@@ -74,6 +74,38 @@ public class GreaterThan23 implements CheckApiVersion {
         String[] paths = {"/data"};
         for (String path : paths) {
             if (new File(path).canRead()) return true;
+        }
+        return false;
+    }
+
+    private boolean checkInstalls() {
+        Process process = null;
+        String[] installs = {
+                "magisk",
+                "com.noshufou.androd.au",
+                "com.thirdparty.superuser",
+                "eu.chainfire.supersu",
+                "com.koushikdutta.superuser",
+                "com.zachspong.temprootromovejb",
+                "com.ramdroid.appquarantine",
+                "com.devadvance.rootcloak",
+                "com.devadvance.rootcloakplus",
+        };
+
+        try {
+            process = Runtime.getRuntime().exec("pm list packages");
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = in.readLine();
+            while (line != null) {
+                for (String keyWord : installs) {
+                    if (line.contains(keyWord)) {
+                        return true;
+                    }
+                }
+                line = in.readLine();
+            }
+        } catch (Throwable e) {
+            return false;
         }
         return false;
     }
